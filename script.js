@@ -1,16 +1,44 @@
+let cursor = document.getElementsByClassName("cursor")[0];
+let follower = document.getElementsByClassName("cursor-follower")[0];
 
-$(document).on('click', function (e) {
-    clearInterval();
-})
-var $cursor = $('.cursor');
-function moveCursor(e) {
-    $cursor.css({
-        "top": `${e.clientY - 30}px`,
-        "left": `${e.clientX - 30}px`,
+const body = document.getElementById('main');
+
+let posX = 0,
+    posY = 0,
+    mouseX = 0,
+    mouseY = 0;
+
+/* Update the cursor and its follower's position every 10 miliseconds*/
+
+setInterval(function () {
+
+    posX += (mouseX - posX) / 9;
+    posY += (mouseY - posY) / 9;
+
+    TweenMax.set(follower, {
+        css: {
+            left: posX - 20,
+            top: posY - 20
+        }
     });
-}
 
-$(window).on('mousemove', moveCursor);
+    TweenMax.set(cursor, {
+        css: {
+            left: mouseX,
+            top: mouseY
+        }
+    });
+
+}, 10);
+
+
+/* Track the x and y position*/
+
+$('body').on('mousemove', e => {
+    mouseX = e.pageX;
+    mouseY = e.pageY;
+
+});
 
 
 window.onscroll = () => {
